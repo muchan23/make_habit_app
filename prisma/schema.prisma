@@ -1,0 +1,128 @@
+// This is Prisma schema file
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String?
+    avatar_url String?
+    goals     Goal[]
+    records   Record[]
+    calendar_events CalendarEvent[]
+    classification_rules ClassificationRule[]
+    ai_recommendations AIRecommendation[]
+    created_at DataTime @default(now())
+    updated_at DataTime @updatedAt
+
+    @@map("users")
+}
+
+model Goal {
+    id          String   @id @default(cuid())
+    name        String
+    description String?
+    color       String   @default("green")
+    is_active   Boolean  @default(true)
+    user_id     String
+    user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    records     Record[]
+    calendar_events CalendarEvent[]
+    classification_rules ClassificationRule[]
+    ai_recommendations AIRecommendation[]
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
+
+    @@map("goals")
+}
+
+model Record {
+    id               String   @id @default(cuid())
+    goal_id          String
+    user_id          String
+    date             DateTime @db.Date
+    status           Status   @default(COMPLETED)
+    duration_minutes Int      @default(0)
+    notes            String?
+    goal             Goal     @relation(fields: [goal_id], references: [id], onDelete: Cascade)
+    user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    created_at       DateTime @default(now())
+    updated_at       DateTime @updatedAt
+
+    @@unique([goal_id, date])
+    @@map("goal_records")
+}
+
+model CalendarEvent {
+  id                      String   @id @default(cuid())
+  user_id                 String
+  event_id                String?  // GoogleカレンダーのイベントID
+  title                   String
+  description             String?
+  start_time              DateTime
+  end_time                DateTime
+  goal_id                 String?
+  event_type              EventType @default(INTERNAL)
+  classification_method   String   @default("manual")
+  classification_confidence Float?
+  is_classified           Boolean  @default(false)
+  is_recurring            Boolean  @default(false)
+  recurrence_rule         Json?
+  sync_status             String   @default("pending")
+  goal                    Goal?    @relation(fields: [goal_id], references: [id], onDelete: SetNull)
+  user                    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
+
+  @@map("calendar_events")
+}
+
+model ClassificationRule {
+  id            String   @id @default(cuid())
+  user_id       String
+  goal_id       String
+  rule_name     String
+  keywords      String[]
+  time_patterns Json?
+  is_active     Boolean  @default(true)
+  priority      Int      @default(1)
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  goal          Goal     @relation(fields: [goal_id], references: [id], onDelete: Cascade)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("classification_rules")
+}
+
+model AIRecommendation {
+  id                   String   @id @default(cuid())
+  user_id              String
+  goal_id              String
+  recommendation_type  String
+  message              String
+  priority             Int      @default(1)
+  is_read              Boolean  @default(false)
+  user                 User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  goal                 Goal     @relation(fields: [goal_id], references: [id], onDelete: Cascade)
+  created_at           DateTime @default(now())
+
+  @@map("ai_recommendations")
+}
+
+enum Status {
+  COMPLETED
+  SKIPPED
+}
+
+enum EventType {
+  INTERNAL
+  EXTERNAL
+  SYNCED
+}
