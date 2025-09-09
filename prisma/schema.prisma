@@ -19,8 +19,8 @@ model User {
     calendar_events CalendarEvent[]
     classification_rules ClassificationRule[]
     ai_recommendations AIRecommendation[]
-    created_at DataTime @default(now())
-    updated_at DataTime @updatedAt
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     @@map("users")
 }
