@@ -1,36 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HabitTracker - GitHub風習慣化アプリ
 
-## Getting Started
+GitHubのコミット履歴のような視覚的なフィードバックシステムを活用し、ユーザーの習慣形成を支援するアプリケーション。
 
-First, run the development server:
+## 📋 要件定義
+
+詳細な要件定義は [docs/requirements.md](./docs/requirements.md) を参照してください。
+
+## 🎯 主要機能
+
+- **GitHub風ビジュアル表示**: 相対的評価システムによる色の濃淡
+- **アプリ内カレンダー**: 目標実行予定の管理
+- **Googleカレンダー連携**: 双方向同期システム
+- **手動イベント分類**: 拡張性を考慮した分類システム
+- **AIエージェント**: 行動提案システム
+
+## 🛠 技術スタック
+
+- **フロントエンド**: Next.js 14 + TypeScript + Tailwind CSS
+- **UIコンポーネント**: Radix UI
+- **状態管理**: Zustand
+- **データベース**: PostgreSQL + Prisma
+- **認証**: NextAuth.js
+- **外部連携**: Google Calendar API
+- **AI**: OpenAI GPT-4 / Anthropic Claude
+
+## 🚀 開発開始
+
+### 前提条件
+- Node.js 18+
+- PostgreSQL
+- Google Calendar API キー
+
+### セットアップ
 
 ```bash
+# 依存関係のインストール
+npm install
+
+# 環境変数の設定
+cp .env.example .env.local
+
+# データベースのセットアップ
+npx prisma migrate dev
+
+# 開発サーバーの起動
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 環境変数
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+# データベース
+DATABASE_URL="postgresql://username:password@localhost:5432/habit_tracker"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# NextAuth.js
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
 
-## Learn More
+# Google Calendar API
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-To learn more about Next.js, take a look at the following resources:
+# AI API
+OPENAI_API_KEY="your-openai-api-key"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 プロジェクト構造
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # Next.js App Router
+├── components/             # Reactコンポーネント
+├── lib/                    # ユーティリティ・設定
+├── stores/                 # Zustand状態管理
+└── types/                  # TypeScript型定義
 
-## Deploy on Vercel
+docs/
+├── requirements.md         # 詳細な要件定義書
+├── implementation-plan.md  # 実装計画書
+└── architecture.md         # アーキテクチャ設計
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎨 デザイン原則
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **GitHub風のミニマルデザイン**
+- **相対的評価による色の濃淡**（上位=明るい、下位=暗い）
+- **アクセシビリティの考慮**
+- **レスポンシブデザイン**
+
+## 📊 データベース設計
+
+詳細なテーブル構造は [docs/requirements.md](./docs/requirements.md) の「5. データベース設計」を参照してください。
+
+## 🔄 実装計画
+
+実装の進め方は [docs/implementation-plan.md](./docs/implementation-plan.md) を参照してください。
+
+## 🚀 デプロイ
+
+### Vercel（推奨）
+
+```bash
+# Vercel CLIのインストール
+npm i -g vercel
+
+# デプロイ
+vercel
+```
+
+### その他のプラットフォーム
+
+- **フロントエンド**: Vercel, Netlify, AWS Amplify
+- **データベース**: PostgreSQL on AWS RDS, Supabase
+- **外部連携**: Google Calendar API
+
+## 📝 開発ガイドライン
+
+1. **要件定義書の参照**: 実装前に必ず `docs/requirements.md` を確認
+2. **型安全性**: TypeScriptの型を適切に定義
+3. **エラーハンドリング**: 適切なエラーハンドリングの実装
+4. **テスト**: 単体テスト・統合テストの実装
+5. **アクセシビリティ**: WAI-ARIA準拠の実装
+
+## 🤝 コントリビューション
+
+1. 要件定義書を確認
+2. 実装計画に従って開発
+3. テストの実装
+4. プルリクエストの作成
+
+## 📄 ライセンス
+
+MIT License
