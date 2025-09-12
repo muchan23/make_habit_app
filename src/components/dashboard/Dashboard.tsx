@@ -1,11 +1,27 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useGoalStore } from '@/stores/goalStore';
+import { useRecordStore } from '@/stores/recordStore';
+import { ContributionCalendar } from '@/components/calendar/ContributionCalendar';
+import { GoalSelector } from '@/components/goals/GoalSelector';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
+  const { goals, selectedGoal, fetchGoals, isLoading: goalsLoading, error: goalsError } = useGoalStore();
+  const { fetchRecords, isLoading: recordsLoading, error: recordsError } = useRecordStore();
+
+  useEffect(() => {
+    // 初期データの読み込み
+    fetchGoals();
+    fetchRecords();
+  }, [fetchGoals, fetchRecords]);
+
+  const isLoading = goalsLoading || recordsLoading;
+  const error = goalsError || recordsError;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,45 +44,29 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* 目標一覧 */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                目標一覧
-              </h2>
-              <div className="space-y-3">
-                <div className="p-3 border rounded-lg">
-                  <h3 className="font-medium">英語学習</h3>
-                  <p className="text-sm text-gray-500">毎日30分の英語学習</p>
-                </div>
-                <div className="p-3 border rounded-lg">
-                  <h3 className="font-medium">運動</h3>
-                  <p className="text-sm text-gray-500">週3回のジム通い</p>
-                </div>
-              </div>
-            </div>
+        {error && (
+          <div className="mb-6">
+            <ErrorDisplay error={error} />
           </div>
+        )}
 
-          {/* カレンダー表示 */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                GitHub風カレンダー
-              </h2>
-              <div className="grid grid-cols-7 gap-1">
-                {/* カレンダーの日付セル */}
-                {Array.from({ length: 30 }, (_, i) => (
-                  <div
-                    key={i}
-                    className="w-3 h-3 bg-gray-200 rounded-sm"
-                    title={`${i + 1}日目`}
-                  />
-                ))}
-              </div>
-            </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <LoadingSpinner size="lg" />
+            <span className="ml-3 text-gray-500">データを読み込み中...</span>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-8">
+            {/* 目標選択 */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900">記録カレンダー</h2>
+              <GoalSelector />
+            </div>
+
+            {/* GitHub風カレンダー */}
+            <ContributionCalendar goalId={selectedGoal?.id} />
+          </div>
+        )}
       </main>
     </div>
   );
