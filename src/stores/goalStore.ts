@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Goal } from '@/types';
+import { goalAPI } from '@/lib/api';
 
 interface GoalStore {
   goals: Goal[];
@@ -16,6 +17,12 @@ interface GoalStore {
   selectGoal: (goal: Goal | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+
+  // API連携
+  fetchGoals: () => Promise<void>;
+  createGoal: (goalData: Omit<Goal, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
+  updateGoalAPI: (id: string, updates: Partial<Goal>) => Promise<void>;
+  deleteGoalAPI: (id: string) => Promise<void>;
 }
 
 export const useGoalStore = create<GoalStore>()(
@@ -58,6 +65,62 @@ export const useGoalStore = create<GoalStore>()(
       setLoading: (loading) => set({ isLoading: loading }),
       
       setError: (error) => set({ error }),
+
+      // API連携メソッド
+      fetchGoals: async () => {
+        try {
+          set({ isLoading: true, error: null });
+          const goals = await goalAPI.getGoals();
+          set({ goals });
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      createGoal: async (goalData) => {
+        try {
+          set({ isLoading: true, error: null });
+          const newGoal = await goalAPI.createGoal(goalData);
+          set((state) => ({ goals: [...state.goals, newGoal] }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      updateGoalAPI: async (id, updates) => {
+        try {
+          set({ isLoading: true, error: null });
+          const updatedGoal = await goalAPI.updateGoal(id, updates);
+          set((state) => ({
+            goals: state.goals.map((goal) =>
+              goal.id === id ? updatedGoal : goal
+            ),
+          }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      deleteGoalAPI: async (id) => {
+        try {
+          set({ isLoading: true, error: null });
+          await goalAPI.deleteGoal(id);
+          set((state) => ({
+            goals: state.goals.filter((goal) => goal.id !== id),
+            selectedGoal: state.selectedGoal?.id === id ? null : state.selectedGoal,
+          }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
     }),
     {
       name: 'goal-storage',

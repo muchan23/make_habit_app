@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Record, Percentiles } from '@/types';
+import { recordAPI, statsAPI } from '@/lib/api';
 
 interface RecordStore {
   records: Record[];
@@ -18,6 +19,13 @@ interface RecordStore {
   calculateColorLevel: (goalId: string, duration: number) => 0 | 1 | 2 | 3 | 4;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+
+  // API連携
+  fetchRecords: (params?: { goal_id?: string; date?: string }) => Promise<void>;
+  createRecordAPI: (recordData: Omit<Record, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
+  updateRecordAPI: (id: string, updates: Partial<Record>) => Promise<void>;
+  deleteRecordAPI: (id: string) => Promise<void>;
+  fetchPercentiles: (goalId: string, period?: string) => Promise<Percentiles>;
 }
 
 export const useRecordStore = create<RecordStore>()(
@@ -115,6 +123,75 @@ export const useRecordStore = create<RecordStore>()(
       setLoading: (loading) => set({ isLoading: loading }),
       
       setError: (error) => set({ error }),
+
+      // API連携メソッド
+      fetchRecords: async (params) => {
+        try {
+          set({ isLoading: true, error: null });
+          const apiParams = params ? {
+            goalId: params.goal_id,
+            date: params.date
+          } : {};
+          const records = await recordAPI.getRecords(apiParams);
+          set({ records });
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      createRecordAPI: async (recordData) => {
+        try {
+          set({ isLoading: true, error: null });
+          const newRecord = await recordAPI.createRecord(recordData);
+          set((state) => ({ records: [...state.records, newRecord] }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      updateRecordAPI: async (id, updates) => {
+        try {
+          set({ isLoading: true, error: null });
+          const updatedRecord = await recordAPI.updateRecord(id, updates);
+          set((state) => ({
+            records: state.records.map((record) =>
+              record.id === id ? updatedRecord : record
+            ),
+          }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      deleteRecordAPI: async (id) => {
+        try {
+          set({ isLoading: true, error: null });
+          await recordAPI.deleteRecord(id);
+          set((state) => ({
+            records: state.records.filter((record) => record.id !== id),
+          }));
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Unknown error' });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      
+      fetchPercentiles: async (goalId, period) => {
+        try {
+          const percentiles = await statsAPI.getPercentiles(goalId, period);
+          return percentiles;
+        } catch (error) {
+          console.error('Error fetching percentiles:', error);
+          return { p25: 0, p50: 0, p75: 0 };
+        }
+      },
     }),
     {
       name: 'record-storage',
