@@ -81,3 +81,36 @@ export async function PUT(
     );
     }
 }
+
+// DELETE /api/goals/[id] - 目標削除
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+  ) {
+    try {
+      const session = await getServerSession(authOptions);
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+  
+      const goal = await prisma.goal.deleteMany({
+        where: {
+          id: params.id,
+          user_id: session.user.id,
+        },
+      });
+  
+      if (goal.count === 0) {
+        return NextResponse.json({ error: 'Goal not found' }, { status: 404 });
+      }
+  
+      return NextResponse.json({ message: 'Goal deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting goal:', error);
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: 500 }
+      );
+    }
+  }
