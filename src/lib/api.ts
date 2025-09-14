@@ -34,7 +34,7 @@ export const goalAPI = {
     },
     
     // 目標作成
-    createGoal: async (goal: Omit<Goal, 'id' | 'created_at' | 'updated_at'>): Promise<Goal> => {
+    createGoal: async (goal: Omit<Goal, 'id' | 'user_id' | 'created_at' | 'updated_at'>): Promise<Goal> => {
         return apiCall<Goal>('/api/goals', {
             method: 'POST',
             body: JSON.stringify(goal),

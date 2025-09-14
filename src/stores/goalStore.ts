@@ -11,7 +11,7 @@ interface GoalStore {
   
   // Actions
   setGoals: (goals: Goal[]) => void;
-  addGoal: (goal: Omit<Goal, 'id' | 'created_at' | 'updated_at'>) => void;
+  addGoal: (goal: Omit<Goal, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => void;
   updateGoal: (id: string, updates: Partial<Goal>) => void;
   deleteGoal: (id: string) => void;
   selectGoal: (goal: Goal | null) => void;
@@ -20,7 +20,7 @@ interface GoalStore {
 
   // API連携
   fetchGoals: () => Promise<void>;
-  createGoal: (goalData: Omit<Goal, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
+  createGoal: (goalData: Omit<Goal, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => Promise<void>;
   updateGoalAPI: (id: string, updates: Partial<Goal>) => Promise<void>;
   deleteGoalAPI: (id: string) => Promise<void>;
 }
@@ -39,6 +39,7 @@ export const useGoalStore = create<GoalStore>()(
         const newGoal: Goal = {
           ...goalData,
           id: `goal_${Date.now()}`,
+          user_id: '', // 一時的な値、実際のAPI呼び出しでは不要
           created_at: new Date(),
           updated_at: new Date(),
         };
