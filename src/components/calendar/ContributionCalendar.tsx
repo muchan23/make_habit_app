@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRecordStore } from '@/stores/recordStore';
 import { useGoalStore } from '@/stores/goalStore';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { RecordForm } from '@/components/records/RecordForm';
 
 interface ContributionCalendarProps {
     goalId?: string;
@@ -14,6 +15,9 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
     const { records, calculateColorLevel, fetchRecords } = useRecordStore();
     const { selectedGoal } = useGoalStore();
     const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+    const [isRecordFormOpen, setIsRecordFormOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedRecord, setSelectedRecord] = useState<any>(null);
 
     // カレンダーデータの生成
     const generateCalendarData = () => {
@@ -51,6 +55,13 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
             case 4: return 'bg-green-300';
             default: return 'bg-gray-200';
         }
+    };
+
+    // 日付クリック時の処理
+    const handleDateClick = (date: Date, record?: any) => {
+        setSelectedDate(date);
+        setSelectedRecord(record);
+        setIsRecordFormOpen(true);
     };
 
     // ツールチップの内容
@@ -98,6 +109,7 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
                   className={`w-3 h-3 rounded-sm cursor-pointer transition-colors ${getColorClass(day.level)}`}
                   onMouseEnter={() => setHoveredDate(day.date)}
                   onMouseLeave={() => setHoveredDate(null)}
+                  onClick={() => handleDateClick(day.date, day.record)}
                 />
               </Tooltip>
             ))}
@@ -115,6 +127,19 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
             </div>
             <span>多い</span>
           </div>
+
+          {/* 記録フォーム */}
+          <RecordForm
+            isOpen={isRecordFormOpen}
+            onClose={() => {
+              setIsRecordFormOpen(false);
+              setSelectedDate(null);
+              setSelectedRecord(null);
+            }}
+            selectedDate={selectedDate || undefined}
+            goalId={goalId}
+            existingRecord={selectedRecord}
+          />
         </div>
       );
 }

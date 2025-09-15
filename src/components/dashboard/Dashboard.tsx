@@ -6,6 +6,7 @@ import { useGoalStore } from '@/stores/goalStore';
 import { useRecordStore } from '@/stores/recordStore';
 import { ContributionCalendar } from '@/components/calendar/ContributionCalendar';
 import { GoalSelector } from '@/components/goals/GoalSelector';
+import { RecordList } from '@/components/records/RecordList';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 
@@ -65,6 +66,9 @@ export default function Dashboard() {
 
             {/* GitHub風カレンダー */}
             <ContributionCalendar goalId={selectedGoal?.id} />
+
+            {/* 記録一覧を追加 */}
+            <RecordList goalId={selectedGoal?.id} limit={5} />
           </div>
         )}
       </main>
