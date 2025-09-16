@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useGoalStore } from '@/stores/goalStore';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -12,6 +13,7 @@ import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 import { Goal } from '@/types';
 
 export default function GoalsPage() {
+  const { data: session } = useSession();
   const { 
     goals, 
     isLoading, 
@@ -32,8 +34,10 @@ export default function GoalsPage() {
   });
 
   useEffect(() => {
-    fetchGoals();
-  }, [fetchGoals]);
+    if (session) {
+      fetchGoals();
+    }
+  }, [fetchGoals, session]);
 
   const handleCreateGoal = async () => {
     if (!formData.name.trim()) return;
@@ -103,6 +107,18 @@ export default function GoalsPage() {
     { value: 'yellow', label: '黄', class: 'bg-yellow-500' },
     { value: 'pink', label: 'ピンク', class: 'bg-pink-500' },
   ];
+
+  // 認証チェック
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">ログインが必要です</h2>
+          <p className="text-gray-600">このページにアクセスするにはログインしてください。</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (

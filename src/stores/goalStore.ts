@@ -71,9 +71,12 @@ export const useGoalStore = create<GoalStore>()(
       fetchGoals: async () => {
         try {
           set({ isLoading: true, error: null });
+          console.log('Fetching goals...');
           const goals = await goalAPI.getGoals();
+          console.log('Goals fetched successfully:', goals);
           set({ goals });
         } catch (error) {
+          console.error('Error fetching goals:', error);
           set({ error: error instanceof Error ? error.message : 'Unknown error' });
         } finally {
           set({ isLoading: false });

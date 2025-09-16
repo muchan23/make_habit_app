@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         session: async ({ session, token }) => {
-            if (session?.user && token?.sub ) {
+            if (session?.user && token?.sub) {
                 session.user.id = token.sub;
             }
             return session;
@@ -27,8 +27,13 @@ export const authOptions: NextAuthOptions = {
     },
     session: {
         strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60, // 30日
+    },
+    jwt: {
+        maxAge: 30 * 24 * 60 * 60, // 30日
     },
     pages: {
-        signIn: '/login',
+        signIn: '/auth/login',
     },
+    debug: process.env.NODE_ENV === 'development', // 開発環境でデバッグログを有効化
 };

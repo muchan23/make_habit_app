@@ -19,8 +19,14 @@ async function apiCall<T>(
     });
 
     if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(error.error || `HTTP error! status: ${response.status}`);
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+            const error = await response.json();
+            errorMessage = error.error || errorMessage;
+        } catch {
+            // JSON解析に失敗した場合はデフォルトメッセージを使用
+        }
+        throw new Error(errorMessage);
     }
 
     return response.json();

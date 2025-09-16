@@ -18,7 +18,11 @@ export function Navigation() {
     ];
 
     const handleSignOut = () => {
-        signOut({ callbackUrl: '/auth/login' });
+        // セッションを完全にクリア
+        signOut({ 
+            callbackUrl: '/auth/login',
+            redirect: true 
+        });
     };
 
     return (
