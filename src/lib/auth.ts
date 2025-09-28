@@ -1,10 +1,7 @@
 import { NextAuthOptions } from "next-auth";
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from './prisma';
 
 export const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -35,5 +32,5 @@ export const authOptions: NextAuthOptions = {
     pages: {
         signIn: '/auth/login',
     },
-    debug: process.env.NODE_ENV === 'development', // 開発環境でデバッグログを有効化
+    debug: process.env.NODE_ENV === 'development',
 };

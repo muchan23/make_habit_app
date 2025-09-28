@@ -1,9 +1,8 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
-import { useGoalStore } from '@/stores/goalStore';
-import { useRecordStore } from '@/stores/recordStore';
+import { useGoals } from '@/hooks/useGoals';
+import { useRecords } from '@/hooks/useRecords';
 import { ContributionCalendar } from '@/components/calendar/ContributionCalendar';
 import { GoalSelector } from '@/components/goals/GoalSelector';
 import { RecordList } from '@/components/records/RecordList';
@@ -12,14 +11,8 @@ import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const { goals, selectedGoal, fetchGoals, isLoading: goalsLoading, error: goalsError } = useGoalStore();
-  const { fetchRecords, isLoading: recordsLoading, error: recordsError } = useRecordStore();
-
-  useEffect(() => {
-    // 初期データの読み込み
-    fetchGoals();
-    fetchRecords();
-  }, [fetchGoals, fetchRecords]);
+  const { goals, selectedGoal, isLoading: goalsLoading, error: goalsError } = useGoals();
+  const { isLoading: recordsLoading, error: recordsError } = useRecords();
 
   const isLoading = goalsLoading || recordsLoading;
   const error = goalsError || recordsError;

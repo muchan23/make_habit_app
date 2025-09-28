@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRecordStore } from '@/stores/recordStore';
 import { useGoalStore } from '@/stores/goalStore';
+import { useRecords } from '@/hooks/useRecords';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { RecordForm } from './RecordForm';
@@ -15,14 +16,11 @@ interface RecordListProps {
 }
 
 export function RecordList({ goalId, limit = 10, showHeader = true }: RecordListProps) {
-    const { records, fetchRecords, deleteRecordAPI, isLoading, error } = useRecordStore();
+    const { deleteRecordAPI } = useRecordStore();
     const { goals } = useGoalStore();
+    const { records, isLoading, error } = useRecords(goalId);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingRecord, setEditingRecord] = useState<Record | null>(null);
-
-    useEffect(() => {
-        fetchRecords(goalId ? { goal_id: goalId } : undefined);
-    }, [fetchRecords, goalId]);
 
     const filteredRecords = records
         .filter(record => !goalId || record.goal_id === goalId)

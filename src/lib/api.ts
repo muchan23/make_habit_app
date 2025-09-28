@@ -8,7 +8,10 @@ async function apiCall<T>(
     endpoint: string,
     options: RequestInit = {}
 ): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+    // 相対URLを使用（API_BASE_URLが空の場合）
+    const url = API_BASE_URL ? `${API_BASE_URL}${endpoint}` : endpoint;
+
+    console.log('API Call:', url, options);
 
     const response = await fetch(url, {
         headers: {
@@ -17,6 +20,8 @@ async function apiCall<T>(
         },
         ...options,
     });
+
+    console.log('API Response:', response.status, response.statusText);
 
     if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
@@ -29,7 +34,9 @@ async function apiCall<T>(
         throw new Error(errorMessage);
     }
 
-    return response.json();
+    const data = await response.json();
+    console.log('API Data:', data);
+    return data;
 }
 
 // 目標管理API
