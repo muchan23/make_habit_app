@@ -40,8 +40,11 @@ npm install
 # 環境変数の設定
 cp .env.example .env.local
 
+# PostgreSQLの起動
+brew services start postgresql@14
+
 # データベースのセットアップ
-npx prisma migrate dev
+npx prisma db push
 
 # 開発サーバーの起動
 npm run dev
@@ -91,6 +94,67 @@ docs/
 ## 📊 データベース設計
 
 詳細なテーブル構造は [docs/requirements.md](./docs/requirements.md) の「5. データベース設計」を参照してください。
+
+### データベースの起動・停止
+
+```bash
+# PostgreSQLの起動
+brew services start postgresql@14
+
+# PostgreSQLの停止
+brew services stop postgresql@14
+
+# 状態確認
+brew services list | grep postgresql
+```
+
+### データベースの中身確認
+
+#### 1. Prisma Studio（推奨）
+```bash
+npx prisma studio
+# → http://localhost:5555 でブラウザから操作
+```
+
+#### 2. psqlコマンドライン
+```bash
+# データベースに接続
+psql -h localhost -p 5432 -U murakamitomoki -d habit_tracker
+
+# 接続後のコマンド
+\dt                    # テーブル一覧
+\d users              # usersテーブルの構造
+SELECT * FROM users;   # usersテーブルの全データ
+\q                    # 終了
+```
+
+#### 3. Prisma CLI
+```bash
+# データベースの状態確認
+npx prisma db push
+
+# マイグレーション履歴
+npx prisma migrate status
+
+# データベースリセット（注意！）
+npx prisma migrate reset
+```
+
+### データベース管理のコマンド
+
+```bash
+# スキーマの変更をデータベースに反映
+npx prisma db push
+
+# マイグレーションファイルの生成
+npx prisma migrate dev --name "migration_name"
+
+# 本番環境用マイグレーション
+npx prisma migrate deploy
+
+# Prismaクライアントの再生成
+npx prisma generate
+```
 
 ## 🔄 実装計画
 
