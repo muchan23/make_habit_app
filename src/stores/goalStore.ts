@@ -69,6 +69,9 @@ export const useGoalStore = create<GoalStore>()(
 
       // API連携メソッド
       fetchGoals: async () => {
+        const state = get();
+        if (state.isLoading || state.goals.length > 0) return; // 既にローディング中またはデータが存在する場合は何もしない
+        
         try {
           set({ isLoading: true, error: null });
           console.log('Fetching goals...');

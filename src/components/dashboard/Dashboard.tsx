@@ -1,8 +1,9 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useGoals } from '@/hooks/useGoals';
-import { useRecords } from '@/hooks/useRecords';
+import { useEffect, useRef, useCallback } from 'react';
+import { useGoalStore } from '@/stores/goalStore';
+import { useRecordStore } from '@/stores/recordStore';
 import { ContributionCalendar } from '@/components/calendar/ContributionCalendar';
 import { GoalSelector } from '@/components/goals/GoalSelector';
 import { RecordList } from '@/components/records/RecordList';
@@ -11,8 +12,18 @@ import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const { goals, selectedGoal, isLoading: goalsLoading, error: goalsError } = useGoals();
-  const { isLoading: recordsLoading, error: recordsError } = useRecords();
+  const { goals, selectedGoal, fetchGoals, isLoading: goalsLoading, error: goalsError } = useGoalStore();
+  const { fetchRecords, isLoading: recordsLoading, error: recordsError } = useRecordStore();
+  const hasInitialized = useRef(false);
+
+  useEffect(() => {
+    // 初回のみデータを取得（hasInitializedフラグで制御）
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      fetchGoals();
+      fetchRecords();
+    }
+  }, []); // 依存配列を完全に空にする
 
   const isLoading = goalsLoading || recordsLoading;
   const error = goalsError || recordsError;

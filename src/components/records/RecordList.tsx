@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRecordStore } from '@/stores/recordStore';
 import { useGoalStore } from '@/stores/goalStore';
-import { useRecords } from '@/hooks/useRecords';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { RecordForm } from './RecordForm';
@@ -16,11 +15,19 @@ interface RecordListProps {
 }
 
 export function RecordList({ goalId, limit = 10, showHeader = true }: RecordListProps) {
-    const { deleteRecordAPI } = useRecordStore();
+    const { records, fetchRecords, deleteRecordAPI, isLoading, error } = useRecordStore();
     const { goals } = useGoalStore();
-    const { records, isLoading, error } = useRecords(goalId);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingRecord, setEditingRecord] = useState<Record | null>(null);
+    const lastGoalId = useRef<string | undefined>(undefined);
+
+    useEffect(() => {
+        // goalIdが変更された時のみデータを取得
+        if (goalId !== lastGoalId.current) {
+            lastGoalId.current = goalId;
+            fetchRecords(goalId ? { goal_id: goalId } : undefined);
+        }
+    }, [goalId]); // fetchRecordsを依存配列から削除
 
     const filteredRecords = records
         .filter(record => !goalId || record.goal_id === goalId)

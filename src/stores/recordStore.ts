@@ -126,6 +126,9 @@ export const useRecordStore = create<RecordStore>()(
 
       // API連携メソッド
       fetchRecords: async (params) => {
+        const state = get();
+        if (state.isLoading) return; // 既にローディング中の場合は何もしない
+        
         try {
           set({ isLoading: true, error: null });
           const apiParams = params ? {
