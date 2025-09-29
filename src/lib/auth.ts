@@ -15,14 +15,30 @@ export const authOptions: NextAuthOptions = {
         session: async ({ session, token }) => {
             if (session?.user && token?.sub) {
                 session.user.id = token.sub;
+                // avatar_urlもセッションに含める
+                if (token.avatar_url) {
+                    session.user.avatar_url = token.avatar_url as string;
+                }
             }
             return session;
         },
         jwt: async ({ user, token }) => {
             if (user) {
                 token.uid = user.id;
+                // avatar_urlをトークンに保存
+                if (user.avatar_url) {
+                    token.avatar_url = user.avatar_url;
+                }
             }
             return token;
+        },
+        // ユーザー作成時にimageをavatar_urlにマッピング
+        signIn: async ({ user, account, profile }) => {
+            if (user.image) {
+                user.avatar_url = user.image;
+                delete user.image;
+            }
+            return true;
         },
     },
     session: {
