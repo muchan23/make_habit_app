@@ -20,15 +20,40 @@ export default function Dashboard() {
     // セッションが存在し、まだデータを取得していない場合のみデータを取得
     if (session?.user?.id && !hasFetched.current) {
       console.log('Session found, fetching data...');
+      console.log('Session user ID:', session.user.id);
+      
       hasFetched.current = true;
-      // 直接関数を呼び出し、依存配列に含めない
-      fetchGoals();
-      fetchRecords();
+      
+      // 非同期処理を適切に処理
+      const fetchData = async () => {
+        try {
+          console.log('Starting data fetch...');
+          await Promise.all([fetchGoals(), fetchRecords()]);
+          console.log('Data fetch completed successfully');
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      
+      fetchData();
     }
-  }, [session?.user?.id]); // 関数を依存配列から完全に除外
+  }, [session?.user?.id]); // 関数を依存配列から除外
 
   const isLoading = status === 'loading' || goalsLoading || recordsLoading;
   const error = goalsError || recordsError;
+
+  // デバッグログを追加
+  console.log('Dashboard Debug Info:', {
+    sessionStatus: status,
+    sessionUser: session?.user,
+    goalsLoading,
+    recordsLoading,
+    goalsError,
+    recordsError,
+    goalsCount: goals?.length || 0,
+    goalsIsNull: goals === null,
+    selectedGoal: selectedGoal?.id
+  });
 
   return (
     <div className="min-h-screen bg-[#0d1117]">
@@ -50,6 +75,26 @@ export default function Dashboard() {
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner size="lg" />
             <span className="ml-3 text-[#8b949e]">データを読み込み中...</span>
+          </div>
+        ) : goals === null ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <LoadingSpinner size="lg" />
+              <span className="ml-3 text-[#8b949e]">データを読み込み中...</span>
+            </div>
+          </div>
+        ) : goals.length === 0 ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-[#f0f6fc] mb-2">目標がありません</h2>
+              <p className="text-[#8b949e] mb-4">まずは目標を作成してください。</p>
+              <a 
+                href="/goals" 
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                目標を作成する
+              </a>
+            </div>
           </div>
         ) : (
           <div className="space-y-8">

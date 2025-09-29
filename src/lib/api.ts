@@ -28,9 +28,12 @@ async function apiCall<T>(
         try {
             const error = await response.json();
             errorMessage = error.error || errorMessage;
-        } catch {
+            console.error('API Error Details:', error);
+        } catch (parseError) {
+            console.error('Failed to parse error response:', parseError);
             // JSON解析に失敗した場合はデフォルトメッセージを使用
         }
+        console.error('API Call Failed:', url, errorMessage);
         throw new Error(errorMessage);
     }
 

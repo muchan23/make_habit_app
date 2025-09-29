@@ -4,7 +4,7 @@ import { Goal } from '@/types';
 import { goalAPI } from '@/lib/api';
 
 interface GoalStore {
-  goals: Goal[];
+  goals: Goal[] | null; // nullを許可（未取得状態）
   selectedGoal: Goal | null;
   isLoading: boolean;
   error: string | null;
@@ -30,7 +30,7 @@ export const useGoalStore = create<GoalStore>()(
   // persistを一時的に無効化してテスト
   // persist(
     (set, get) => ({
-      goals: [],
+      goals: null, // 初期状態をnullに変更（未取得状態を明確化）
       selectedGoal: null,
       isLoading: false,
       error: null,
@@ -77,17 +77,25 @@ export const useGoalStore = create<GoalStore>()(
           return; // 既にローディング中の場合は何もしない
         }
         
+        // 既にデータを取得済みの場合はスキップ（空配列でも取得済みとみなす）
+        if (state.goals !== null) {
+          console.log('Goals already fetched, skipping...');
+          return;
+        }
+        
         try {
           set({ isLoading: true, error: null });
           console.log('Fetching goals...');
           const goals = await goalAPI.getGoals();
           console.log('Goals fetched successfully:', goals);
-          set({ goals });
+          set({ goals: goals || [], isLoading: false });
         } catch (error) {
           console.error('Error fetching goals:', error);
-          set({ error: error instanceof Error ? error.message : 'Unknown error' });
-        } finally {
-          set({ isLoading: false });
+          set({ 
+            error: error instanceof Error ? error.message : 'Unknown error',
+            isLoading: false,
+            goals: [] // エラー時も空配列を設定
+          });
         }
       },
       

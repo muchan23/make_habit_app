@@ -138,7 +138,7 @@ export default function GoalsPage() {
             <p className="text-[#8b949e] mt-2">習慣化したい目標を作成・管理しましょう</p>
           </div>
           <div className="flex gap-3">
-            {goals.length > 0 && (
+            {goals && goals.length > 0 && (
               <Button
                 onClick={clearGoals}
                 className="bg-[#da3633] hover:bg-[#b91c1c] text-white border-[#30363d]"
@@ -162,7 +162,7 @@ export default function GoalsPage() {
           </div>
         )}
 
-        {goals.length === 0 ? (
+        {!goals || goals.length === 0 ? (
           <Card className="p-12 text-center bg-[#161b22] border-[#30363d]">
             <div className="text-[#8b949e]">
               <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@ export default function GoalsPage() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {goals.map((goal) => (
+            {goals?.map((goal) => (
               <Card key={goal.id} className="p-6 hover:shadow-lg transition-shadow bg-[#161b22] border-[#30363d]">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">

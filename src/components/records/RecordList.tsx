@@ -30,8 +30,8 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
     }, [goalId]); // fetchRecordsを依存配列から削除
 
     const filteredRecords = records
-        .filter(record => !goalId || record.goal_id === goalId)
-        .slice(0, limit);
+        ?.filter(record => !goalId || record.goal_id === goalId)
+        .slice(0, limit) || [];
 
     const handleEdit = (record: Record) => {
         setEditingRecord(record);
@@ -49,12 +49,12 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
     };
 
     const getGoalName = (goalId: string) => {
-        const goal = goals.find(g => g.id === goalId);
+        const goal = goals?.find(g => g.id === goalId);
         return goal?.name || 'Unknown Goal';
     };
 
     const getGoalColor = (goalId: string) => {
-        const goal = goals.find(g => g.id === goalId);
+        const goal = goals?.find(g => g.id === goalId);
         return goal?.color || 'green';
     };
 

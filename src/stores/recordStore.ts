@@ -4,7 +4,7 @@ import { Record, Percentiles } from '@/types';
 import { recordAPI, statsAPI } from '@/lib/api';
 
 interface RecordStore {
-  records: Record[];
+  records: Record[] | null; // nullを許可（未取得状態）
   isLoading: boolean;
   error: string | null;
   
@@ -32,7 +32,7 @@ export const useRecordStore = create<RecordStore>()(
   // persistを一時的に無効化してテスト
   // persist(
     (set, get) => ({
-      records: [],
+      records: null, // 初期状態をnullに変更（未取得状態を明確化）
       isLoading: false,
       error: null,
       
@@ -133,6 +133,12 @@ export const useRecordStore = create<RecordStore>()(
           return; // 既にローディング中の場合は何もしない
         }
         
+        // 既にデータを取得済みの場合はスキップ（空配列でも取得済みとみなす）
+        if (state.records !== null) {
+          console.log('Records already fetched, skipping...');
+          return;
+        }
+        
         try {
           set({ isLoading: true, error: null });
           console.log('Fetching records...');
@@ -142,12 +148,14 @@ export const useRecordStore = create<RecordStore>()(
           } : {};
           const records = await recordAPI.getRecords(apiParams);
           console.log('Records fetched successfully:', records);
-          set({ records });
+          set({ records: records || [], isLoading: false });
         } catch (error) {
           console.error('Error fetching records:', error);
-          set({ error: error instanceof Error ? error.message : 'Unknown error' });
-        } finally {
-          set({ isLoading: false });
+          set({ 
+            error: error instanceof Error ? error.message : 'Unknown error',
+            isLoading: false,
+            records: [] // エラー時も空配列を設定
+          });
         }
       },
       
