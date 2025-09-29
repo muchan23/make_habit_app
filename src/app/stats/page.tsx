@@ -262,13 +262,13 @@ export default function StatsPage() {
               <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-green-600 text-lg">📊</span>
+                    <div className="w-8 h-8 bg-[#21262d] rounded-lg flex items-center justify-center">
+                      <span className="text-[#238636] text-lg">📊</span>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">全体達成率</p>
-                    <p className="text-2xl font-semibold text-gray-900">{statsData.averageCompletionRate.toFixed(1)}%</p>
+                    <p className="text-sm font-medium text-[#8b949e]">全体達成率</p>
+                    <p className="text-2xl font-semibold text-[#f0f6fc]">{statsData.averageCompletionRate.toFixed(1)}%</p>
                   </div>
                 </div>
               </Card>
@@ -276,13 +276,13 @@ export default function StatsPage() {
               <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <span className="text-orange-600 text-lg">🔥</span>
+                    <div className="w-8 h-8 bg-[#21262d] rounded-lg flex items-center justify-center">
+                      <span className="text-[#f85149] text-lg">🔥</span>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">現在の連続日数</p>
-                    <p className="text-2xl font-semibold text-gray-900">{statsData.currentStreak}日</p>
+                    <p className="text-sm font-medium text-[#8b949e]">現在の連続日数</p>
+                    <p className="text-2xl font-semibold text-[#f0f6fc]">{statsData.currentStreak}日</p>
                   </div>
                 </div>
               </Card>
@@ -290,13 +290,13 @@ export default function StatsPage() {
               <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <span className="text-purple-600 text-lg">⏱️</span>
+                    <div className="w-8 h-8 bg-[#21262d] rounded-lg flex items-center justify-center">
+                      <span className="text-[#a5a5a5] text-lg">⏱️</span>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">総実行時間</p>
-                    <p className="text-2xl font-semibold text-gray-900">{Math.round(statsData.totalTimeSpent / 60)}時間</p>
+                    <p className="text-sm font-medium text-[#8b949e]">総実行時間</p>
+                    <p className="text-2xl font-semibold text-[#f0f6fc]">{Math.round(statsData.totalTimeSpent / 60)}時間</p>
                   </div>
                 </div>
               </Card>
@@ -305,37 +305,37 @@ export default function StatsPage() {
             {/* 詳細統計 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               <Card className="p-6 bg-[#161b22] border-[#30363d]">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">連続実行記録</h3>
+                <h3 className="text-lg font-semibold text-[#f0f6fc] mb-4">連続実行記録</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">最長連続日数</span>
-                    <span className="text-xl font-semibold text-gray-900">{statsData.longestStreak}日</span>
+                    <span className="text-[#8b949e]">最長連続日数</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{statsData.longestStreak}日</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">現在の連続日数</span>
-                    <span className="text-xl font-semibold text-gray-900">{statsData.currentStreak}日</span>
+                    <span className="text-[#8b949e]">現在の連続日数</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{statsData.currentStreak}日</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">平均実行時間</span>
-                    <span className="text-xl font-semibold text-gray-900">{Math.round(statsData.averageTimePerSession)}分</span>
+                    <span className="text-[#8b949e]">平均実行時間</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{Math.round(statsData.averageTimePerSession)}分</span>
                   </div>
                 </div>
               </Card>
 
               <Card className="p-6 bg-[#161b22] border-[#30363d]">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">活動サマリー</h3>
+                <h3 className="text-lg font-semibold text-[#f0f6fc] mb-4">活動サマリー</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">総記録数</span>
-                    <span className="text-xl font-semibold text-gray-900">{statsData.totalRecords}回</span>
+                    <span className="text-[#8b949e]">総記録数</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{statsData.totalRecords}回</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">総目標数</span>
-                    <span className="text-xl font-semibold text-gray-900">{statsData.totalGoals}個</span>
+                    <span className="text-[#8b949e]">総目標数</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{statsData.totalGoals}個</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">総実行時間</span>
-                    <span className="text-xl font-semibold text-gray-900">{Math.round(statsData.totalTimeSpent / 60)}時間</span>
+                    <span className="text-[#8b949e]">総実行時間</span>
+                    <span className="text-xl font-semibold text-[#f0f6fc]">{Math.round(statsData.totalTimeSpent / 60)}時間</span>
                   </div>
                 </div>
               </Card>
@@ -346,23 +346,23 @@ export default function StatsPage() {
         {/* 目標別統計 */}
         {goalStats.length > 0 && (
           <Card className="p-6 bg-[#161b22] border-[#30363d]">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">目標別詳細統計</h3>
+            <h3 className="text-lg font-semibold text-[#f0f6fc] mb-6">目標別詳細統計</h3>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-[#30363d]">
+                <thead className="bg-[#21262d]">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">目標</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">達成率</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">記録数</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">現在の連続</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最長連続</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">総時間</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">平均時間</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">目標</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">達成率</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">記録数</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">現在の連続</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">最長連続</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">総時間</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-[#8b949e] uppercase tracking-wider">平均時間</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-[#161b22] divide-y divide-[#30363d]">
                   {goalStats.map((stat) => (
-                    <tr key={stat.goal.id} className="hover:bg-gray-50">
+                    <tr key={stat.goal.id} className="hover:bg-[#21262d]">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className={`w-3 h-3 rounded-full mr-3 ${
@@ -373,23 +373,23 @@ export default function StatsPage() {
                             stat.goal.color === 'yellow' ? 'bg-yellow-500' :
                             'bg-pink-500'
                           }`} />
-                          <span className="text-sm font-medium text-gray-900">{stat.goal.name}</span>
+                          <span className="text-sm font-medium text-[#f0f6fc]">{stat.goal.name}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`text-sm font-medium ${
-                          stat.completionRate >= 80 ? 'text-green-600' :
-                          stat.completionRate >= 60 ? 'text-yellow-600' :
-                          'text-red-600'
+                          stat.completionRate >= 80 ? 'text-[#238636]' :
+                          stat.completionRate >= 60 ? 'text-[#d29922]' :
+                          'text-[#da3633]'
                         }`}>
                           {stat.completionRate.toFixed(1)}%
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{stat.totalRecords}回</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{stat.currentStreak}日</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{stat.longestStreak}日</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{Math.round(stat.totalTimeSpent / 60)}時間</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{Math.round(stat.averageTimePerSession)}分</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f0f6fc]">{stat.totalRecords}回</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f0f6fc]">{stat.currentStreak}日</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f0f6fc]">{stat.longestStreak}日</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f0f6fc]">{Math.round(stat.totalTimeSpent / 60)}時間</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#f0f6fc]">{Math.round(stat.averageTimePerSession)}分</td>
                     </tr>
                   ))}
                 </tbody>
