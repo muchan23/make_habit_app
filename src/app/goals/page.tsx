@@ -228,32 +228,32 @@ export default function GoalsPage() {
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 目標名 *
               </label>
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="目標名を入力してください"
-                className="w-full bg-[#21262d] border-[#30363d] text-[#f0f6fc]"
+                className="w-full text-gray-900"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 説明
               </label>
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="目標の詳細や動機を記入してください"
-                className="w-full bg-[#21262d] border-[#30363d] text-[#f0f6fc]"
+                className="w-full text-gray-900"
                 rows={3}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 色
               </label>
               <div className="flex space-x-2">
@@ -275,6 +275,7 @@ export default function GoalsPage() {
             <Button
               onClick={closeModals}
               variant="outline"
+              className="text-gray-700"
             >
               キャンセル
             </Button>
@@ -296,32 +297,32 @@ export default function GoalsPage() {
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 目標名 *
               </label>
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="目標名を入力してください"
-                className="w-full bg-[#21262d] border-[#30363d] text-[#f0f6fc]"
+                className="w-full text-gray-900"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 説明
               </label>
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="目標の詳細や動機を記入してください"
-                className="w-full bg-[#21262d] border-[#30363d] text-[#f0f6fc]"
+                className="w-full text-gray-900"
                 rows={3}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 色
               </label>
               <div className="flex space-x-2">
@@ -343,6 +344,7 @@ export default function GoalsPage() {
             <Button
               onClick={closeModals}
               variant="outline"
+              className="text-gray-700"
             >
               キャンセル
             </Button>
