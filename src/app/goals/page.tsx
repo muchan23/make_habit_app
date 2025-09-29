@@ -22,7 +22,8 @@ export default function GoalsPage() {
     createGoal, 
     updateGoalAPI, 
     deleteGoalAPI,
-    setError 
+    setError,
+    clearGoals
   } = useGoalStore();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -136,12 +137,23 @@ export default function GoalsPage() {
             <h1 className="text-3xl font-bold text-gray-900">目標管理</h1>
             <p className="text-gray-600 mt-2">習慣化したい目標を作成・管理しましょう</p>
           </div>
-          <Button
-            onClick={() => setIsCreateModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            新しい目標を作成
-          </Button>
+          <div className="flex gap-3">
+            {goals.length > 0 && (
+              <Button
+                onClick={clearGoals}
+                className="bg-red-600 hover:bg-red-700"
+                variant="outline"
+              >
+                データをクリア
+              </Button>
+            )}
+            <Button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              新しい目標を作成
+            </Button>
+          </div>
         </div>
 
         {error && (
@@ -228,7 +240,7 @@ export default function GoalsPage() {
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="例: 英語学習、運動、読書"
+                placeholder="目標名を入力してください"
                 className="w-full"
               />
             </div>
@@ -296,7 +308,7 @@ export default function GoalsPage() {
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="例: 英語学習、運動、読書"
+                placeholder="目標名を入力してください"
                 className="w-full"
               />
             </div>

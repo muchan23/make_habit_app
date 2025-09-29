@@ -14,31 +14,16 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const goalId = searchParams.get('goal_id');
 
-    // 一時的なダミーデータを返す（データベース認証問題のため）
-    const records = [
-      {
-        id: '1',
-        goal_id: '1',
+    // データベースから実際の記録を取得
+    const records = await prisma.record.findMany({
+      where: {
         user_id: session.user.id,
-        date: new Date().toISOString().split('T')[0],
-        status: 'COMPLETED',
-        duration_minutes: 30,
-        notes: '今日も頑張りました',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        ...(goalId && { goal_id: goalId }),
       },
-      {
-        id: '2',
-        goal_id: '2', 
-        user_id: session.user.id,
-        date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-        status: 'COMPLETED',
-        duration_minutes: 60,
-        notes: 'ジムで筋トレ',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }
-    ];
+      orderBy: {
+        date: 'desc',
+      },
+    });
 
     return NextResponse.json(records);
   } catch (error) {

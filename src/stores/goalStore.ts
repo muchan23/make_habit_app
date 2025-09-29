@@ -23,6 +23,7 @@ interface GoalStore {
   createGoal: (goalData: Omit<Goal, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => Promise<void>;
   updateGoalAPI: (id: string, updates: Partial<Goal>) => Promise<void>;
   deleteGoalAPI: (id: string) => Promise<void>;
+  clearGoals: () => void;
 }
 
 export const useGoalStore = create<GoalStore>()(
@@ -127,6 +128,11 @@ export const useGoalStore = create<GoalStore>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+
+      // 目標データをクリア
+      clearGoals: () => {
+        set({ goals: [], selectedGoal: null, error: null });
       },
     }),
     {

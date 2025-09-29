@@ -11,27 +11,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // 一時的なダミーデータを返す（データベース認証問題のため）
-    const goals = [
-      {
-        id: '1',
-        name: '英語学習',
-        description: '毎日30分の英語学習',
-        is_active: true,
+    // データベースから実際の目標を取得
+    const goals = await prisma.goal.findMany({
+      where: {
         user_id: session.user.id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
       },
-      {
-        id: '2', 
-        name: '運動',
-        description: '週3回のジム通い',
-        is_active: true,
-        user_id: session.user.id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }
-    ];
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
 
     return NextResponse.json(goals);
   } catch (error) {
