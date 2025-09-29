@@ -26,11 +26,11 @@ export function Navigation() {
     };
 
     return (
-        <header className="bg-white shadow-sm border-b">
+        <header className="bg-[#161b22] shadow-sm border-b border-[#30363d]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-4">
               <div className="flex items-center space-x-8">
-                <Link href="/" className="text-2xl font-bold text-gray-900">
+                <Link href="/" className="text-2xl font-bold text-[#f0f6fc]">
                   HabitTracker
                 </Link>
                 
@@ -41,8 +41,8 @@ export function Navigation() {
                       href={item.href}
                       className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         pathname === item.href
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          ? 'bg-[#238636] text-white'
+                          : 'text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d]'
                       }`}
                     >
                       <span>{item.icon}</span>
@@ -53,13 +53,13 @@ export function Navigation() {
               </div>
     
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-[#8b949e]">
                   こんにちは、{session?.user?.name}さん
                 </span>
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="text-sm"
+                  className="text-sm border-[#30363d] text-[#f0f6fc] hover:bg-[#21262d]"
                 >
                   ログアウト
                 </Button>

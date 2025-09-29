@@ -29,7 +29,7 @@ export default function Dashboard() {
   const error = goalsError || recordsError;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0d1117]">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {error && (
           <div className="mb-6">
@@ -40,13 +40,13 @@ export default function Dashboard() {
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner size="lg" />
-            <span className="ml-3 text-gray-500">データを読み込み中...</span>
+            <span className="ml-3 text-[#8b949e]">データを読み込み中...</span>
           </div>
         ) : (
           <div className="space-y-8">
             {/* 目標選択 */}
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">記録カレンダー</h2>
+              <h2 className="text-xl font-semibold text-[#f0f6fc]">記録カレンダー</h2>
               <GoalSelector />
             </div>
 

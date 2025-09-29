@@ -20,17 +20,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0d1117]">
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
-          <h1 className="text-3xl font-bold text-gray-900">設定</h1>
+          <h1 className="text-3xl font-bold text-[#f0f6fc]">設定</h1>
 
           {/* プロフィール設定 */}
-          <Card className="p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">プロフィール設定</h2>
+          <Card className="p-6 bg-[#161b22] border-[#30363d]">
+            <h2 className="text-lg font-medium text-[#f0f6fc] mb-4">プロフィール設定</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
                   表示名
                 </label>
                 <Input
@@ -39,7 +39,7 @@ export default function SettingsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#f0f6fc] mb-2">
                   メールアドレス
                 </label>
                 <Input
@@ -55,8 +55,8 @@ export default function SettingsPage() {
           </Card>
 
           {/* 通知設定 */}
-          <Card className="p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">通知設定</h2>
+          <Card className="p-6 bg-[#161b22] border-[#30363d]">
+            <h2 className="text-lg font-medium text-[#f0f6fc] mb-4">通知設定</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -76,8 +76,8 @@ export default function SettingsPage() {
           </Card>
 
           {/* データ管理 */}
-          <Card className="p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">データ管理</h2>
+          <Card className="p-6 bg-[#161b22] border-[#30363d]">
+            <h2 className="text-lg font-medium text-[#f0f6fc] mb-4">データ管理</h2>
             <div className="space-y-4">
               <div>
                 <h3 className="text-sm font-medium text-gray-700 mb-2">データエクスポート</h3>
@@ -103,7 +103,7 @@ export default function SettingsPage() {
             <Button
               onClick={handleSave}
               disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-[#238636] hover:bg-[#2ea043] text-white"
             >
               {isLoading ? '保存中...' : '設定を保存'}
             </Button>

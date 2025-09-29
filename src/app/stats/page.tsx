@@ -216,7 +216,7 @@ export default function StatsPage() {
 
   if (isLoading || goalsLoading || recordsLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -224,7 +224,7 @@ export default function StatsPage() {
 
   if (error || goalsError || recordsError) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
         <ErrorDisplay 
           error={error || goalsError || recordsError || '不明なエラーが発生しました'} 
           onDismiss={() => setError(null)} 
@@ -234,32 +234,32 @@ export default function StatsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#0d1117]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">統計・分析</h1>
-          <p className="text-gray-600 mt-2">あなたの習慣化の進捗を詳しく分析します</p>
+          <h1 className="text-3xl font-bold text-[#f0f6fc]">統計・分析</h1>
+          <p className="text-[#8b949e] mt-2">あなたの習慣化の進捗を詳しく分析します</p>
         </div>
 
         {statsData && (
           <>
             {/* 全体統計 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-blue-600 text-lg">🎯</span>
+                    <div className="w-8 h-8 bg-[#21262d] rounded-lg flex items-center justify-center">
+                      <span className="text-[#58a6ff] text-lg">🎯</span>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">アクティブな目標</p>
-                    <p className="text-2xl font-semibold text-gray-900">{statsData.activeGoals}</p>
+                    <p className="text-sm font-medium text-[#8b949e]">アクティブな目標</p>
+                    <p className="text-2xl font-semibold text-[#f0f6fc]">{statsData.activeGoals}</p>
                   </div>
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
@@ -273,7 +273,7 @@ export default function StatsPage() {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -287,7 +287,7 @@ export default function StatsPage() {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -304,7 +304,7 @@ export default function StatsPage() {
 
             {/* 詳細統計 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">連続実行記録</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -322,7 +322,7 @@ export default function StatsPage() {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-[#161b22] border-[#30363d]">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">活動サマリー</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -345,7 +345,7 @@ export default function StatsPage() {
 
         {/* 目標別統計 */}
         {goalStats.length > 0 && (
-          <Card className="p-6">
+          <Card className="p-6 bg-[#161b22] border-[#30363d]">
             <h3 className="text-lg font-semibold text-gray-900 mb-6">目標別詳細統計</h3>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">

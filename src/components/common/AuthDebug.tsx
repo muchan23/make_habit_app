@@ -11,10 +11,10 @@ export function AuthDebug() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 bg-black bg-opacity-80 text-white p-4 rounded-lg text-xs max-w-sm">
-      <h3 className="font-bold mb-2">認証状態デバッグ</h3>
+    <div className="fixed bottom-4 right-4 bg-[#161b22] border border-[#30363d] text-[#f0f6fc] p-4 rounded-lg text-xs max-w-sm">
+      <h3 className="font-bold mb-2 text-[#f0f6fc]">認証状態デバッグ</h3>
       <div className="space-y-1">
-        <div>Status: <span className={status === 'authenticated' ? 'text-green-400' : 'text-red-400'}>{status}</span></div>
+        <div>Status: <span className={status === 'authenticated' ? 'text-[#238636]' : 'text-[#da3633]'}>{status}</span></div>
         {session ? (
           <>
             <div>User ID: {session.user?.id || 'N/A'}</div>
