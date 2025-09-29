@@ -27,7 +27,8 @@ interface GoalStore {
 }
 
 export const useGoalStore = create<GoalStore>()(
-  persist(
+  // persistを一時的に無効化してテスト
+  // persist(
     (set, get) => ({
       goals: [],
       selectedGoal: null,
@@ -71,7 +72,10 @@ export const useGoalStore = create<GoalStore>()(
       // API連携メソッド
       fetchGoals: async () => {
         const state = get();
-        if (state.isLoading || state.goals.length > 0) return; // 既にローディング中またはデータが存在する場合は何もしない
+        if (state.isLoading) {
+          console.log('Goals already loading, skipping...');
+          return; // 既にローディング中の場合は何もしない
+        }
         
         try {
           set({ isLoading: true, error: null });
@@ -134,10 +138,17 @@ export const useGoalStore = create<GoalStore>()(
       clearGoals: () => {
         set({ goals: [], selectedGoal: null, error: null });
       },
-    }),
-    {
-      name: 'goal-storage',
-      partialize: (state) => ({ goals: state.goals, selectedGoal: state.selectedGoal }),
-    }
-  )
+    })
+    // persistを一時的に無効化してテスト
+    // }),
+    // {
+    //   name: 'goal-storage',
+    //   partialize: (state) => ({ goals: state.goals, selectedGoal: state.selectedGoal }),
+    //   // persistミドルウェアの設定を最適化
+    //   skipHydration: false,
+    //   onRehydrateStorage: () => (state) => {
+    //     console.log('GoalStore rehydrated:', state);
+    //   },
+    // }
+  // )
 );

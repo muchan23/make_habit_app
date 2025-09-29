@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGoalStore } from '@/stores/goalStore';
 import { useRecordStore } from '@/stores/recordStore';
 import { ContributionCalendar } from '@/components/calendar/ContributionCalendar';
@@ -11,21 +11,23 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { ErrorDisplay } from '@/components/common/ErrorDisplay';
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { goals, selectedGoal, fetchGoals, isLoading: goalsLoading, error: goalsError } = useGoalStore();
   const { fetchRecords, isLoading: recordsLoading, error: recordsError } = useRecordStore();
-  const hasInitialized = useRef(false);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    // 初回のみデータを取得（hasInitializedフラグで制御）
-    if (!hasInitialized.current) {
-      hasInitialized.current = true;
+    // セッションが存在し、まだデータを取得していない場合のみデータを取得
+    if (session?.user?.id && !hasFetched.current) {
+      console.log('Session found, fetching data...');
+      hasFetched.current = true;
+      // 直接関数を呼び出し、依存配列に含めない
       fetchGoals();
       fetchRecords();
     }
-  }, []); // 依存配列を完全に空にする
+  }, [session?.user?.id]); // 関数を依存配列から完全に除外
 
-  const isLoading = goalsLoading || recordsLoading;
+  const isLoading = status === 'loading' || goalsLoading || recordsLoading;
   const error = goalsError || recordsError;
 
   return (
@@ -37,7 +39,14 @@ export default function Dashboard() {
           </div>
         )}
 
-        {isLoading ? (
+        {status === 'unauthenticated' ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-[#f0f6fc] mb-2">ログインが必要です</h2>
+              <p className="text-[#8b949e]">ダッシュボードを表示するにはログインしてください。</p>
+            </div>
+          </div>
+        ) : isLoading ? (
           <div className="flex items-center justify-center py-12">
             <LoadingSpinner size="lg" />
             <span className="ml-3 text-[#8b949e]">データを読み込み中...</span>

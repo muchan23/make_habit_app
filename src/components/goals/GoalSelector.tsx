@@ -13,8 +13,9 @@ export function GoalSelector() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
+    // 一度だけ実行
     fetchGoals();
-  }, [fetchGoals]);
+  }, []); // 依存配列を空にして、一度だけ実行
 
   const handleGoalSelect = async (goal: any) => {
     selectGoal(goal);

@@ -29,7 +29,8 @@ interface RecordStore {
 }
 
 export const useRecordStore = create<RecordStore>()(
-  persist(
+  // persistを一時的に無効化してテスト
+  // persist(
     (set, get) => ({
       records: [],
       isLoading: false,
@@ -127,17 +128,23 @@ export const useRecordStore = create<RecordStore>()(
       // API連携メソッド
       fetchRecords: async (params) => {
         const state = get();
-        if (state.isLoading) return; // 既にローディング中の場合は何もしない
+        if (state.isLoading) {
+          console.log('Records already loading, skipping...');
+          return; // 既にローディング中の場合は何もしない
+        }
         
         try {
           set({ isLoading: true, error: null });
+          console.log('Fetching records...');
           const apiParams = params ? {
             goalId: params.goal_id,
             date: params.date
           } : {};
           const records = await recordAPI.getRecords(apiParams);
+          console.log('Records fetched successfully:', records);
           set({ records });
         } catch (error) {
+          console.error('Error fetching records:', error);
           set({ error: error instanceof Error ? error.message : 'Unknown error' });
         } finally {
           set({ isLoading: false });
@@ -195,10 +202,17 @@ export const useRecordStore = create<RecordStore>()(
           return { p25: 0, p50: 0, p75: 0 };
         }
       },
-    }),
-    {
-      name: 'record-storage',
-      partialize: (state) => ({ records: state.records }),
-    }
-  )
+    })
+    // persistを一時的に無効化してテスト
+    // }),
+    // {
+    //   name: 'record-storage',
+    //   partialize: (state) => ({ records: state.records }),
+    //   // persistミドルウェアの設定を最適化
+    //   skipHydration: false,
+    //   onRehydrateStorage: () => (state) => {
+    //     console.log('RecordStore rehydrated:', state);
+    //   },
+    // }
+  // )
 );
