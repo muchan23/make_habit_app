@@ -147,12 +147,6 @@ export default function GoalsPage() {
                 データをクリア
               </Button>
             )}
-            <Button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="bg-[#238636] hover:bg-[#2ea043] text-white"
-            >
-              新しい目標を作成
-            </Button>
           </div>
         </div>
 
