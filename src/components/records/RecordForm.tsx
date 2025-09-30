@@ -112,13 +112,13 @@ export function RecordForm({
             <form onSubmit={handleSubmit} className="space-y-4">
                 {!goalId && (
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             目標 *
                         </label>
                         <select
                             value={formData.goal_id}
                             onChange={(e) => setFormData({ ...formData, goal_id: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                             required
                         >
                             <option value="">目標を選択してください</option>
@@ -132,7 +132,7 @@ export function RecordForm({
                 )}
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         日付 *
                     </label>
                     <Input
@@ -144,13 +144,13 @@ export function RecordForm({
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         ステータス
                     </label>
                     <select
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as 'COMPLETED' | 'SKIPPED' })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
                     >
                         <option value="COMPLETED">完了</option>
                         <option value="SKIPPED">スキップ</option>
@@ -158,7 +158,7 @@ export function RecordForm({
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         実行時間（分）
                     </label>
                     <Input
@@ -171,7 +171,7 @@ export function RecordForm({
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                         メモ
                     </label>
                     <Textarea
@@ -187,6 +187,7 @@ export function RecordForm({
                         type="button"
                         onClick={handleClose}
                         variant="outline"
+                        className="text-gray-700"
                     >
                         キャンセル
                     </Button>
