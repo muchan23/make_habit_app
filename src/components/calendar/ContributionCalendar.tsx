@@ -28,7 +28,7 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
         // 1年間の日付を生成
         for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
             const date = new Date(d);
-            const record  = records.find(r => {
+            const record = records?.find(r => {
                 const recordDate = new Date(r.date);
                 return recordDate.toDateString() === date.toDateString() &&
                     (!goalId || r.goal_id === goalId);
@@ -45,15 +45,15 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
         return calendarData;
     };
 
-    // 色のレベルに応じたCSSクラス
+    // GitHub風の色のレベルに応じたCSSクラス
     const getColorClass = (level: number) => {
         switch (level) {
-            case 0: return 'bg-gray-200';
-            case 1: return 'bg-green-800';
-            case 2: return 'bg-green-600';
-            case 3: return 'bg-green-500';
-            case 4: return 'bg-green-300';
-            default: return 'bg-gray-200';
+            case 0: return 'bg-[#161b22] border border-[#30363d]';
+            case 1: return 'bg-[#0e4429]';
+            case 2: return 'bg-[#006d32]';
+            case 3: return 'bg-[#26a641]';
+            case 4: return 'bg-[#39d353]';
+            default: return 'bg-[#161b22] border border-[#30363d]';
         }
     };
 
@@ -87,45 +87,98 @@ export function ContributionCalendar({ goalId, year = new Date().getFullYear() }
     const calendarData = generateCalendarData();
 
     return (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-[#0d1117] border border-[#30363d] rounded-lg shadow-lg p-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-[#f0f6fc]">
               {selectedGoal ? `${selectedGoal.name}の記録` : '全体の記録'}
             </h2>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-[#8b949e]">
               {year}年
             </div>
           </div>
     
-          {/* カレンダーグリッド */}
-          <div className="grid grid-cols-53 gap-1 mb-4">
-            {calendarData.map((day, index) => (
-              <Tooltip
-                key={index}
-                content={getTooltipContent(day)}
-                side="top"
-              >
-                <div
-                  className={`w-3 h-3 rounded-sm cursor-pointer transition-colors ${getColorClass(day.level)}`}
-                  onMouseEnter={() => setHoveredDate(day.date)}
-                  onMouseLeave={() => setHoveredDate(null)}
-                  onClick={() => handleDateClick(day.date, day.record)}
-                />
-              </Tooltip>
-            ))}
-          </div>
-    
-          {/* 凡例 */}
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            <span>少ない</span>
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-gray-200 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-600 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-400 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-300 rounded-sm"></div>
+          {/* GitHub風カレンダーグリッド */}
+          <div className="overflow-x-auto">
+            <div className="inline-block">
+              {/* 月のラベル */}
+              <div className="flex mb-2">
+                <div className="w-16"></div>
+                <div className="grid grid-cols-53 gap-1" style={{ width: 'calc(53 * 12px + 52 * 4px)' }}>
+                  {Array.from({ length: 53 }, (_, i) => {
+                    const weekStart = new Date(year, 0, 1);
+                    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + (i * 7));
+                    const month = weekStart.getMonth();
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    
+                    // 月の最初の週のみ表示
+                    const isFirstWeekOfMonth = weekStart.getDate() <= 7;
+                    
+                    return (
+                      <div key={i} className="w-3 h-3 flex items-center justify-center">
+                        {isFirstWeekOfMonth && (
+                          <span className="text-xs text-[#8b949e]">{monthNames[month]}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              {/* カレンダーグリッド */}
+              <div className="flex">
+                <div className="w-16 flex flex-col gap-1">
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+                    <div key={day} className="w-3 h-3 flex items-center justify-start pl-2">
+                      <span className="text-xs text-[#8b949e] leading-none">{day}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-1">
+                  {Array.from({ length: 53 }, (_, weekIndex) => (
+                    <div key={weekIndex} className="flex flex-col gap-1">
+                      {Array.from({ length: 7 }, (_, dayIndex) => {
+                        const totalIndex = weekIndex * 7 + dayIndex;
+                        if (totalIndex >= calendarData.length) return null;
+                        const day = calendarData[totalIndex];
+                        return (
+                          <Tooltip
+                            key={`${weekIndex}-${dayIndex}`}
+                            content={getTooltipContent(day)}
+                            side="top"
+                          >
+                            <div
+                              className={`w-3 h-3 rounded-sm cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-[#f0f6fc] hover:ring-opacity-50 ${getColorClass(day.level)}`}
+                              onMouseEnter={() => setHoveredDate(day.date)}
+                              onMouseLeave={() => setHoveredDate(null)}
+                              onClick={() => handleDateClick(day.date, day.record)}
+                            />
+                          </Tooltip>
+                        );
+                      }).filter(Boolean)}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <span>多い</span>
+          </div>
+          
+          {/* GitHub風凡例 */}
+          <div className="flex items-center justify-between mt-4 text-sm text-[#8b949e]">
+            <div className="flex items-center space-x-2">
+              <span>Less</span>
+              <div className="flex space-x-1">
+                {[0, 1, 2, 3, 4].map((level) => (
+                  <div
+                    key={level}
+                    className={`w-3 h-3 rounded-sm ${getColorClass(level)}`}
+                  />
+                ))}
+              </div>
+              <span>More</span>
+            </div>
+            <div className="text-xs">
+              {calendarData.filter(day => day.level > 0).length} contributions in the last year
+            </div>
           </div>
 
           {/* 記録フォーム */}

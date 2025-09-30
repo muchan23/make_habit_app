@@ -78,7 +78,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
         return (
             <div className="text-center py-8">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <p className="mt-2 text-gray-500">記録を読み込み中...</p>
+                <p className="mt-2 text-[#8b949e]">記録を読み込み中...</p>
             </div>
         );
     }
@@ -101,7 +101,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
         <div className="space-y-4">
             {showHeader && (
                 <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-[#f0f6fc]">
                         {goalId ? '記録一覧' : '最近の記録'}
                     </h3>
                     <Button

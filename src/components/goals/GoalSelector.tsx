@@ -39,7 +39,7 @@ export function GoalSelector() {
     return (
       <div className="flex items-center justify-center p-4">
         <LoadingSpinner />
-        <span className="ml-2 text-sm text-gray-500">目標を読み込み中...</span>
+        <span className="ml-2 text-sm text-[#8b949e]">目標を読み込み中...</span>
       </div>
     );
   }
@@ -52,7 +52,7 @@ export function GoalSelector() {
         <Button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           variant="outline"
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2 bg-[#21262d] border-[#30363d] text-[#f0f6fc] hover:bg-[#30363d]"
         >
           <span>{selectedGoal ? selectedGoal.name : '全ての目標'}</span>
           <svg
@@ -67,34 +67,34 @@ export function GoalSelector() {
       </div>
 
       {isDropdownOpen && (
-        <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+        <div className="absolute top-full left-0 mt-1 w-64 bg-[#21262d] border border-[#30363d] rounded-md shadow-lg z-10">
           <div className="py-1">
             <button
               onClick={handleShowAll}
-              className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
-                !selectedGoal ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+              className={`w-full px-4 py-2 text-left text-sm hover:bg-[#30363d] ${
+                !selectedGoal ? 'bg-[#238636] text-white' : 'text-[#f0f6fc]'
               }`}
             >
               全ての目標
             </button>
             
-            {goals.map((goal) => (
+            {goals?.map((goal) => (
               <button
                 key={goal.id}
                 onClick={() => handleGoalSelect(goal)}
-                className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
-                  selectedGoal?.id === goal.id ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                className={`w-full px-4 py-2 text-left text-sm hover:bg-[#30363d] ${
+                  selectedGoal?.id === goal.id ? 'bg-[#238636] text-white' : 'text-[#f0f6fc]'
                 }`}
               >
                 <div className="font-medium">{goal.name}</div>
                 {goal.description && (
-                  <div className="text-xs text-gray-500 truncate">{goal.description}</div>
+                  <div className="text-xs text-[#8b949e] truncate">{goal.description}</div>
                 )}
               </button>
             ))}
             
-            {goals.length === 0 && (
-              <div className="px-4 py-2 text-sm text-gray-500">
+            {goals?.length === 0 && (
+              <div className="px-4 py-2 text-sm text-[#8b949e]">
                 目標がありません
               </div>
             )}
