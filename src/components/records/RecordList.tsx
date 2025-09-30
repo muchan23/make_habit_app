@@ -98,7 +98,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 bg-[#0d1117] border border-[#30363d] rounded-lg shadow-lg p-4">
             {showHeader && (
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-semibold text-[#f0f6fc]">
@@ -117,13 +117,13 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
             )}
 
             {filteredRecords.length === 0 ? (
-                <Card className="p-8 text-center">
-                    <div className="text-gray-500">
+                <Card className="p-8 text-center bg-[#161b22] border border-[#30363d]">
+                    <div className="text-[#8b949e]">
                         <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <p className="font-medium">記録がありません</p>
-                        <p className="text-sm mt-1">最初の記録を追加しましょう</p>
+                        <p className="font-medium text-[#f0f6fc]">記録がありません</p>
+                        <p className="text-sm mt-1 text-[#8b949e]">最初の記録を追加しましょう</p>
                         <Button
                             onClick={() => setIsFormOpen(true)}
                             className="mt-4 bg-blue-600 hover:bg-blue-700"
@@ -135,19 +135,19 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
             ) : (
                 <div className="space-y-3">
                     {filteredRecords.map((record) => (
-                        <Card key={record.id} className="p-4 hover:shadow-md transition-shadow">
+                        <Card key={record.id} className="p-4 hover:shadow-md transition-shadow bg-[#161b22] border border-[#30363d]">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                     <div className="flex items-center space-x-3 mb-2">
                                         {!goalId && (
                                             <div className="flex items-center space-x-2">
                                                 <div className={`w-3 h-3 rounded-full bg-${getGoalColor(record.goal_id)}-500`} />
-                                                <span className="text-sm font-medium text-gray-900">
+                                                <span className="text-sm font-medium text-[#f0f6fc]">
                                                     {getGoalName(record.goal_id)}
                                                 </span>
                                             </div>
                                         )}
-                                        <span className="text-sm text-gray-500">
+                                        <span className="text-sm text-[#8b949e]">
                                             {formatDate(record.date)}
                                         </span>
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -160,7 +160,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
                                     </div>
                                     
                                     {record.duration_minutes > 0 && (
-                                        <div className="flex items-center space-x-2 text-sm text-gray-600 mb-2">
+                                        <div className="flex items-center space-x-2 text-sm text-[#8b949e] mb-2">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
@@ -169,9 +169,9 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
                                     )}
                                     
                                     {record.notes && (
-                                        <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
+                                        <div className="text-sm text-[#8b949e] bg-[#21262d] p-3 rounded-md">
                                             <div className="flex items-start space-x-2">
-                                                <svg className="w-4 h-4 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg className="w-4 h-4 mt-0.5 text-[#8b949e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                                                 </svg>
                                                 <span>{record.notes}</span>
@@ -183,7 +183,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
                                 <div className="flex space-x-2 ml-4">
                                     <button
                                         onClick={() => handleEdit(record)}
-                                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                        className="p-2 text-[#8b949e] hover:text-blue-400 hover:bg-[#21262d] rounded-md transition-colors"
                                         title="編集"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,7 +192,7 @@ export function RecordList({ goalId, limit = 10, showHeader = true }: RecordList
                                     </button>
                                     <button
                                         onClick={() => handleDelete(record.id)}
-                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                        className="p-2 text-[#8b949e] hover:text-red-400 hover:bg-[#21262d] rounded-md transition-colors"
                                         title="削除"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
